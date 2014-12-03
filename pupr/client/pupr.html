@@ -1,8 +1,10 @@
 <head>
     <title>pupr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -20,7 +22,7 @@
     </script>
     <div class="container-fluid" style="background-color:#000000;">
 
-        {{> navigation}} {{> body_ui}}
+        {{> body_ui}}
 
     </div>
 
@@ -33,9 +35,9 @@
         </div>
     </div>
 
-    <div class="row">
+    <!--<div class="row">
         {{> session_phrase}}
-    </div>
+    </div>-->
 
 
 
@@ -53,40 +55,114 @@
 <template name="navigation">
 
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-1">
-            <div class="site_logo">
+        <div class="hidden-xs col-sm-2">
+            <div class="site_logo right_aligned_content">
                 Pupr
             </div>
         </div>
-        <div class="col-sm-9">
-            <div class="row">
-                <div class="col-sm-3 col-md-2 col-sm-offset-1 site_link_col center-block">
-                  <a href="#" id="PhotoBooth" class="site_link">PHOTOBOOTH</a>
 
-                </div>
-                <div class="col-sm-2 col-md-2 site_link_col center-block">
-                   <center> <a href="#" id="Gallery" class="site_link">GALLERY</a></center>
+        <div class="col-xs-12 col-sm-3 col-md-3 aligned_content nav_btn_padding">
+            <button id="PB_button">
+                PHOTOBOOTH
+            </button>
 
-                </div>
-                <div class="col-sm-4 col-md-3 site_link_col center-block">
-                   <center> <a href="#" id="Remote" class="site_link">REMOTE SHUTTER</a></center> 
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-3  aligned_content nav_btn_padding">
+            <button id="Gallery_button">
+                GALLERY
+            </button>
 
-                </div>
-            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-3 aligned_content nav_btn_padding">
+            <button id="Remote_button">
+                REMOTE SHUTTER
+            </button>
+
         </div>
     </div>
 
+
 </template>
+
+
+
 
 <template name="session_phrase">
     <p>{{phrase}}</p>
 </template>
 
 <template name="body_ui">
-    {{#if Photobooth}} {{> photobooth}} {{else}} {{#if Gallery}} {{> gallery}} {{else}} {{> remote}} {{/if}} {{/if}}
+    {{#if Photobooth}}
+        {{> navigation}} 
+        {{> photobooth}} 
+    {{else}} 
+        {{#if Gallery}} 
+            {{> navigation}}
+            {{> gallery}} 
+    {{else}} 
+            {{#if Remote}} 
+                {{> remote}} 
+            {{else}} 
+                {{> splash}} 
+            {{/if}} 
+        {{/if}} 
+    {{/if}}
 </template>
 
+<template name="splash">
+    <div class="row">
+        <div class="hidden-xs col-sm-2 right_aligned_content">
+            <div class="site_logo">
+                Pupr
+            </div>
+        </div>
+        <div class="col-xs-12 hidden-sm hidden-md hidden-lg aligned_content">
+            <div class="site_logo">
+                Pupr
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="hidden-xs col-sm-3 col-sm-offset-2">
+            <div id="vertical_placeholder" class="aligned_content" style="height:{{vertical_height}}px; padding-top:{{vertical_padding}}px;">
+                <i class="fa fa-camera-retro fa-inverse placeholder_icon"></i>
+            </div>
+        </div>
+        <div class="hidden-xs col-sm-3">
+            <div id="vertical_placeholder" class="aligned_content" style="height:{{vertical_height}}px; padding-top:{{vertical_padding}}px;">
+                <i class="fa fa-file-image-o fa-inverse placeholder_icon"></i>
+            </div>
+        </div>
+        <div class="hidden-xs col-sm-3">
+            <div id="vertical_placeholder" class="aligned_content" style="height:{{vertical_height}}px; padding-top:{{vertical_padding}}px;">
+                <i class="fa fa-angle-double-up fa-inverse placeholder_icon"></i>
+            </div>
+        </div>
 
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-sm-offset-2 col-md-3 aligned_content nav_btn_padding">
+            <button id="PB_button">
+                PHOTOBOOTH
+            </button>
+
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-3  aligned_content nav_btn_padding">
+            <button id="Gallery_button">
+                GALLERY
+            </button>
+
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-3 aligned_content nav_btn_padding">
+            <button id="Remote_button">
+                REMOTE SHUTTER
+            </button>
+
+        </div>
+
+    </div>
+
+</template>
 
 
 <!-- The BODY_UI -> PHOTOBOOTH Template -->
@@ -94,7 +170,7 @@
 <template name="photobooth">
 
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-1">
+        <div class=" col-sm-6 col-sm-offset-2">
             {{> webcam}}
         </div>
         <div class="col-sm-4">
@@ -109,16 +185,15 @@
 <template name="webcam">
 
     <div class="row">
-        <div class="col-sm-12 center-block">
-            <div id="my_camera" style="width:100%;"></div>
-        </div>
-        <div class="col-sm-12">
-            <button id="snapshot_button" type="button" class="btn btn-danger btn-lg">
-                Take Snapshot!
-            </button>
-        </div>
+        <div class="hidden-xs col-sm-12 center-block">
+            <div id="img_container">
+                <div id="my_camera" style="width:100%;"></div>
+                <button id="snapshot_button">
+                    Take Snapshot!
+                </button>
+            </div>
 
-
+        </div>
     </div>
 </template>
 
@@ -130,9 +205,13 @@
         <div class="row">
             <div id="thumbnail_col" class="col-sm-6">
                 <div class="thumbnail photobooth_thumbnail">
+                    <div id="img_container">
                     <a href={{image_source}} title="Happy New Year!">
                         <img src={{image_source}} width="80%">
+                        <i id="zoom_icon" class="fa fa-plus-circle fa-lg fa-inverse"></i>
                     </a>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -204,12 +283,20 @@
 </template>
 
 <template name="remote">
-    <div class="container-fluid" style="background-color:#234356; height:{{remote_height}}px">
 
-        <h1> Press anywhere to take picture!</h1>
 
-        <button id="remote_trigger" type="button" class="btn btn-danger btn-lg">
-            PRESS ME
+
+{{> navigation}}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12  aligned_content nav_btn_padding">
+        <button id="remote_trigger">
+            TAKE PICTURE!
         </button>
+
     </div>
+</div>
+
+
+
+
 </template>

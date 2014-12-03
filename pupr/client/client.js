@@ -10,8 +10,6 @@
 Session.set("Photobooth_selected", false);
 Session.set("Gallery_selected", false);
 Session.set("Remote_selected", false);
-
-
 // The highest index read from the Thumbnails collection
 Session.set("max_index", 0);
 // Not currently used, but can be used to cycle through images in the slideshow.
@@ -113,6 +111,14 @@ Template.body_ui.helpers({
         return Session.get("Remote_selected");
     }
 });
+Template.splash.helpers({
+    vertical_height: function() {
+        return window.innerHeight * .6;
+    },
+    vertical_padding: function() {
+        return window.innerHeight * .2;
+    }
+});
 Template.webcam.rendered = function() {
     var cam = this.find('#my_camera');
     console.log("in webcam render template");
@@ -164,17 +170,34 @@ Template.gallery.rendered = function() {
     }
 };
 Template.navigation.events = {
-    'click #PhotoBooth': function(event) {
+    'click #PB_button': function(event) {
         Session.set("Photobooth_selected", true);
         Session.set("Gallery_selected", false);
         Session.set("Remote_selected", false);
     },
-    'click #Gallery': function(event) {
+    'click #Gallery_button': function(event) {
         Session.set("Photobooth_selected", false);
         Session.set("Gallery_selected", true);
         Session.set("Remote_selected", false);
     },
-    'click #Remote': function(event) {
+    'click #Remote_button': function(event) {
+        Session.set("Photobooth_selected", false);
+        Session.set("Gallery_selected", false);
+        Session.set("Remote_selected", true);
+    }
+};
+Template.splash.events = {
+    'click #PB_button': function(event) {
+        Session.set("Photobooth_selected", true);
+        Session.set("Gallery_selected", false);
+        Session.set("Remote_selected", false);
+    },
+    'click #Gallery_button': function(event) {
+        Session.set("Photobooth_selected", false);
+        Session.set("Gallery_selected", true);
+        Session.set("Remote_selected", false);
+    },
+    'click #Remote_button': function(event) {
         Session.set("Photobooth_selected", false);
         Session.set("Gallery_selected", false);
         Session.set("Remote_selected", true);
@@ -211,3 +234,13 @@ Template.remote.events({
         console.log("In the Remote Trigger event.");
     }
 });
+Template.navigation.rendered = function() {
+    $('#PB_button').addClass('animated fadeIn');
+    $('#Gallery_button').addClass('animated fadeIn');
+    $('#Remote_button').addClass('animated fadeIn');
+};
+Template.navigation.destroyed = function() {
+    $('#PB_button').addClass('animated fadeOut');
+    $('#Gallery_button').addClass('animated fadeOut');
+    $('#Remote_button').addClass('animated fadeOut');
+};

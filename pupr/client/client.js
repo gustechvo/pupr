@@ -6,6 +6,7 @@
  * Client Side Javascript for Pupr application
  */
 // Photobooth_selected acts like a flag that initializes the photobooth.
+// 
 Session.set("Photobooth_selected", false);
 Session.set("Gallery_selected", false);
 Session.set("Remote_selected", false);

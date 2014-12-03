@@ -1,0 +1,215 @@
+<head>
+    <title>pupr</title>
+    <link href='http://fonts.googleapis.com/css?family=Damion' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Oswald:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if(d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1515522758723740&version=v2.0";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div class="container-fluid" style="background-color:#000000;">
+
+        {{> navigation}} {{> body_ui}}
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>
+
+    <div class="row">
+        {{> session_phrase}}
+    </div>
+
+
+
+    <!-- <h1>Welcome to Meteor!</h1> -->
+
+
+
+
+
+    <script type="text/javascript" src="../client/compatibility/webcam.js"></script>
+    <script type="text/javascript" src="../client/compatibility/puprpic.js"></script>
+
+</body>
+
+<template name="navigation">
+
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-1">
+            <div class="site_logo">
+                Pupr
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 col-sm-offset-1 site_link_col center-block">
+                  <a href="#" id="PhotoBooth" class="site_link">PHOTOBOOTH</a>
+
+                </div>
+                <div class="col-sm-2 col-md-2 site_link_col center-block">
+                   <center> <a href="#" id="Gallery" class="site_link">GALLERY</a></center>
+
+                </div>
+                <div class="col-sm-4 col-md-3 site_link_col center-block">
+                   <center> <a href="#" id="Remote" class="site_link">REMOTE SHUTTER</a></center> 
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<template name="session_phrase">
+    <p>{{phrase}}</p>
+</template>
+
+<template name="body_ui">
+    {{#if Photobooth}} {{> photobooth}} {{else}} {{#if Gallery}} {{> gallery}} {{else}} {{> remote}} {{/if}} {{/if}}
+</template>
+
+
+
+
+<!-- The BODY_UI -> PHOTOBOOTH Template -->
+
+<template name="photobooth">
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-1">
+            {{> webcam}}
+        </div>
+        <div class="col-sm-4">
+            {{> thumbnails}}
+        </div>
+    </div>
+
+</template>
+
+<!-- The BODY_UI -> PHOTOBOOTH -> WEBCAM Template -->
+
+<template name="webcam">
+
+    <div class="row">
+        <div class="col-sm-12 center-block">
+            <div id="my_camera" style="width:100%;"></div>
+        </div>
+        <div class="col-sm-12">
+            <button id="snapshot_button" type="button" class="btn btn-danger btn-lg">
+                Take Snapshot!
+            </button>
+        </div>
+
+
+    </div>
+</template>
+
+<!-- The BODY_UI -> PHOTOBOOTH -> THUMBNAILS Template -->
+
+<template name="thumbnails">
+    <div class="zoom-gallery">
+        {{#each thumbnails}}
+        <div class="row">
+            <div id="thumbnail_col" class="col-sm-6">
+                <div class="thumbnail photobooth_thumbnail">
+                    <a href={{image_source}} title="Happy New Year!">
+                        <img src={{image_source}} width="80%">
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+    </div>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.zoom-gallery').magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                closeOnContentClick: false,
+                closeBtnInside: false,
+                mainClass: 'mfp-with-zoom mfp-img-mobile',
+                image: {
+                    verticalFit: true,
+                    titleSrc: function(item) {
+                        return item.el.attr('title') + ' &middot; <a class="image-source-link" href="' + item.el.attr('data-source') + '" target="_blank">image source</a>';
+                    }
+                },
+                gallery: {
+                    enabled: true
+                },
+                zoom: {
+                    enabled: true,
+                    duration: 300, // don't foget to change the duration also in CSS
+                    opener: function(element) {
+                        return element.find('img');
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
+</template>
+
+<!-- The BODY_UI -> GALLERY Template -->
+<template name="gallery">
+    <div class="carousel-outer">
+        <a class="close"></a>
+        <div class="carousel-wrapper centered">
+            <div id="my-carousel" class="carousel slide" data-interval="1500">
+                <div class="carousel-inner">
+                    <!-- Carousel items -->
+                    {{> gallery_images}}
+                </div>
+                <!-- Carousel nav -->
+                <a class="carousel-control left" href="#my-carousel" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#my-carousel" data-slide="next">&rsaquo;</a>
+            </div>
+        </div>
+    </div>
+
+</template>
+
+<!-- The BODY_UI -> GALLERY -> GALLERY_IMAGES Template -->
+<template name=" gallery_images">
+
+    {{#each gallery_images}}
+    <div id={{img_index}} class="item">
+        <img src={{image_source}} width={{image_width}} alt="...">
+    </div>
+    {{/each}}
+
+</template>
+
+<template name="remote">
+    <div class="container-fluid" style="background-color:#234356; height:{{remote_height}}px">
+
+        <h1> Press anywhere to take picture!</h1>
+
+        <button id="remote_trigger" type="button" class="btn btn-danger btn-lg">
+            PRESS ME
+        </button>
+    </div>
+</template>
